@@ -68,9 +68,25 @@ Realizar los siguientes análisis y respectivas interpretaciones:
 
 1. Análisis exploratorio.
 
+```{r}
+library(readxl)
+glm <- read_excel("glm.xlsx")
+View(glm)
+#Analisis exploratorio
+head(glm)
+summary(glm)
+plot(glm$repetition, glm$aedes)
+ 
+```
+Con el analisis exploratorio se puede observar los valores mínimos, máximos, media, mediana y cuartiles para cada variable.
+En la imagen se puede observar la relación de las repeticiones con la disminución de insectos 
+
 2. Planteamiento de hipótesis.
+$H.nula$ La cantidad de mosquitos no varía con relación a la repetición de la aplicación del insecticida
+$H.alterna$ La cantidad de mosquitos varía con relación a la repetición de la aplicación del insecticida
 
 3. Análisis de regresión 
+
 
 4. Planteamiento del modelo. 
 
