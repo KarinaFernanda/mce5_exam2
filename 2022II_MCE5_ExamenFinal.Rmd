@@ -2,7 +2,7 @@
 title: "Métodos Cuantitativos en Ecología - MCE5"
 subtitle: "EXAMEN FINAL - 2022II"
 author: 'Karina Olalla'
-date: "`r Sys.Date()`"
+date: "11-07-2023"
 output:
   html_document:
     toc: yes
@@ -75,7 +75,7 @@ View(glm)
 #Analisis exploratorio
 head(glm)
 summary(glm)
-plot(glm$repetition, glm$aedes)
+plot(lm(glm))
  
 ```
 Con el analisis exploratorio se puede observar los valores mínimos, máximos, media, mediana y cuartiles para cada variable.
@@ -111,7 +111,16 @@ En el archivo `"ts.xlsx"` tiene tres datos:
 Realizar los siguientes análisis y respectivas interpretaciones: 
 
 1. Análisis exploratorio: autocorrelación y descomposición, análisis estacional.
+#Analisis exploratorio
+head(ts)
+summary(ts)
+plot(lm(ts))
+#Autocorrelación
+resultado_acf <- acf(ts)
+plot(resultado_acf, main = "Autocorrelación")
+print(resultado_acf)
 
+Se observa el analisis exploratorio de ts, donde se muestra la gráfica, los valores mínimos, máximos, medias y medianas. 
 2. ARIMA, SARIMA, ETS, NNAR
 
 3. Validez de los modelos.
@@ -143,4 +152,55 @@ Seleccione una especie de planta y una especie de animal; asimismo, dos tipos de
 - Chirimoya: *Anona cherimola*
 
 Luego realice un análisis espacial de distribución de la especie en Ecuador continental en base a los datos de presencia del GBIF (use rgbif para descargar la data). Explique el resultado y compare la diferencia entre la salida de los dos modelos. En qué regiones los modelos difieren más en la predicción?   
+
+```{r}
+library(rgbif)
+
+library(tidyverse)
+occ = occ_data(scientificName = 'Tremarctos ornatus', 
+                limit = 200000, 
+                hasCoordinate = TRUE, 
+                hasGeospatialIssue = FALSE)
+
+occ_col <- filter(occ$data, country == 'Ecuador')
+shp <- raster::getData('GADM', country = 'ECU', level = 1)
+
+gg <- ggplot() +
+  geom_point(data = occ_col, aes(x = decimalLongitude, y = decimalLatitude), color = 'pink') +
+  geom_polygon(data = shp, aes(x = long, y = lat, group = group), color = 'grey', fill = NA) +
+  coord_fixed(ylim = c(-5, 12.5), xlim = c(-80, -67)) +
+  xlab('Longitud') +
+  ylab('Latitud')
+
+ggsave(plot = gg, filename = 'Tremarctos ornatus.png', units = 'cm', width = 12, height = 16, dpi = 300)
+
+gg
+
+```
+En esta gráfica se puede observar la distribución de Tremarctos ornatus en el territorio , se puede observar que hay una mayor cantidad de Termarctos ornatus en la parte superior de la Sierra ecuatoriana, también se puede observar que algunas especies están presentes en Zamora Chinchipe 
+
+```{r}
+library(rgbif)
+
+library(tidyverse)
+occ = occ_data(scientificName = 'Ceiba pentandra', 
+                limit = 200000, 
+                hasCoordinate = TRUE, 
+                hasGeospatialIssue = FALSE)
+occ_col <- filter(occ$data, country == 'Ecuador')
+shp <- raster::getData('GADM', country = 'ECU', level = 1)
+
+gg <- ggplot() +
+  geom_point(data = occ_col, aes(x = decimalLongitude, y = decimalLatitude), color = 'black') +
+  geom_polygon(data = shp, aes(x = long, y = lat, group = group), color = 'grey', fill = NA) +
+  coord_fixed(ylim = c(-5, 12.5), xlim = c(-80, -67)) +
+  xlab('Longitud') +
+  ylab('Latitud')
+
+ggsave(plot = gg, filename = 'Tapirus terrestris.png', units = 'cm', width = 12, height = 16, dpi = 300)
+
+gg
+```
+
+
 
