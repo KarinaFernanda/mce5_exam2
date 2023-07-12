@@ -75,7 +75,7 @@ View(glm)
 #Analisis exploratorio
 head(glm)
 summary(glm)
-plot(lm(glm))
+plot(glm$repetition, glm$aedes)
  
 ```
 Con el analisis exploratorio se puede observar los valores mínimos, máximos, media, mediana y cuartiles para cada variable.
@@ -112,15 +112,22 @@ Realizar los siguientes análisis y respectivas interpretaciones:
 
 1. Análisis exploratorio: autocorrelación y descomposición, análisis estacional.
 #Analisis exploratorio
+```{r}
 head(ts)
 summary(ts)
 plot(lm(ts))
-#Autocorrelación
+```
+```{r}
 resultado_acf <- acf(ts)
 plot(resultado_acf, main = "Autocorrelación")
 print(resultado_acf)
+```
+
 
 Se observa el analisis exploratorio de ts, donde se muestra la gráfica, los valores mínimos, máximos, medias y medianas. 
+
+
+
 2. ARIMA, SARIMA, ETS, NNAR
 
 3. Validez de los modelos.
